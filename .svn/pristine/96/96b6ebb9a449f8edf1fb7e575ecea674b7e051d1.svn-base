@@ -1,0 +1,10 @@
+package main.hj.luntan.dao;
+
+import main.hj.luntan.entity.Tiezi;
+
+import java.util.List;
+
+public interface TieziDao {
+    //根据文本框来模糊查询帖子名称
+    List<String> chatiezi(Tiezi tiezi);
+}

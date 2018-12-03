@@ -1,0 +1,57 @@
+package main.hj.luntan.common;
+
+import java.sql.*;
+
+public class Connect {
+    Connection connection=null;
+    //加载驱动，建立连接
+    public Connection getConnection(){
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url="jdbc:mysql://192.168.51.211/luntan?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT";
+            connection=DriverManager.getConnection(url,"root","123456");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return connection;
+    }
+    //关闭资源
+    public void close(){
+        try {
+            connection.close ();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    //查找
+    public ResultSet select(String sql,Object...objects){
+        Connection connection=this.getConnection();
+        try {
+            PreparedStatement p=connection.prepareStatement(sql);
+            for (int i = 0; i <objects.length ; i++) {
+                p.setObject(i+1,objects[i]);
+            }
+            return  p.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+       return null;
+    }
+
+    //增、删、改
+    public int update(String sql,Object...objects){
+        Connection connection=this.getConnection();
+        try {
+            PreparedStatement p=connection.prepareStatement(sql);
+            for (int i = 0; i < objects.length ; i++) {
+                p.setObject(i+1,objects[i]);
+            }
+            return p.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+}

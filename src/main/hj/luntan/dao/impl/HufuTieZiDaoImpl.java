@@ -1,0 +1,58 @@
+package main.hj.luntan.dao.impl;
+
+import main.hj.luntan.common.Connect;
+import main.hj.luntan.common.Gong;
+import main.hj.luntan.dao.HufuTieZiDao;
+import main.hj.luntan.entity.HufuTieZi;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class HufuTieZiDaoImpl implements HufuTieZiDao {
+    Connect connect=new Connect();
+    @Override
+    public List<HufuTieZi> cha(Gong gong) {
+        List<HufuTieZi> list=new ArrayList<>();
+        int j=0;
+        for (int i=1;i<=gong.getDianji();i++){
+            j=i*gong.getYemianshu()+j;
+        }
+        int i=gong.getZongshu()-j;
+        if (i<0){
+            gong.setYemian(gong.getYemian()-(0-i));
+            if (gong.getYemian()<0){
+                gong.setYemian(0);
+            }
+            i=0;
+        }
+        String sql="SELECT * FROM "+gong.getBiao()+" WHERE "+gong.getZiduan()+"="+gong.getTiaojian()+" LIMIT "+i+","+gong.getYemian();
+        ResultSet set=connect.select(sql);
+        try {
+            while (set.next()){
+                HufuTieZi hufuTieZi=new HufuTieZi();
+                hufuTieZi.setHuifuid(set.getInt("huifuid"));
+                hufuTieZi.setHuifuneirong(set.getString("huifuneirong"));
+                hufuTieZi.setHuifuTZid(set.getInt("huifutzid"));
+                hufuTieZi.setHuifuze(set.getInt("huifuzhe"));
+                hufuTieZi.setTime(set.getString("huifutime"));
+                list.add(hufuTieZi);
+            }
+        }catch (SQLException e){
+        }
+        return list;
+    }
+
+    @Override
+    public int shachu(String id) {
+        String sql="DELETE FROM huifutz WHERE huifuid=?";
+        return connect.update(sql,id);
+    }
+
+    public static void main(String[] args) {
+        HufuTieZiDaoImpl hufuTieZiDao=new HufuTieZiDaoImpl();
+        Gong gong=new Gong(2,"huifutz","huifutzid","1");
+        List list=hufuTieZiDao.cha(gong);
+        System.out.println(list.size());
+    }
+}

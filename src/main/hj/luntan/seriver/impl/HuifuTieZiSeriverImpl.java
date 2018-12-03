@@ -1,0 +1,21 @@
+package main.hj.luntan.seriver.impl;
+
+import main.hj.luntan.common.Gong;
+import main.hj.luntan.dao.impl.HufuTieZiDaoImpl;
+import main.hj.luntan.entity.HufuTieZi;
+import main.hj.luntan.seriver.HuifuTieZiSeriver;
+
+import java.util.List;
+
+public class HuifuTieZiSeriverImpl implements HuifuTieZiSeriver {
+    HufuTieZiDaoImpl hufuTieZiDao=new HufuTieZiDaoImpl();
+    @Override
+    public List<HufuTieZi> de(Gong gong) {
+        return hufuTieZiDao.cha(gong);
+    }
+
+    @Override
+    public int shnchu(String id) {
+        return hufuTieZiDao.shachu(id);
+    }
+}

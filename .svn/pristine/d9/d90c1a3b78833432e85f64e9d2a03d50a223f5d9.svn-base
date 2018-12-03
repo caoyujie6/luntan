@@ -1,0 +1,48 @@
+package main.hj.luntan.servlet;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import main.hj.luntan.common.Gong;
+import main.hj.luntan.entity.HufuTieZi;
+import main.hj.luntan.entity.Tiezi;
+import main.hj.luntan.seriver.impl.HuifuTieZiSeriverImpl;
+import main.hj.luntan.seriver.impl.TieziSeriverImpl;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+import java.util.Random;
+
+@WebServlet(name = "HuifuTieZiServlet",urlPatterns = "/gg")
+public class HuifuTieZiServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Gong gong=null;
+        String name=request.getParameter("name");
+        if (request.getSession().getAttribute("huifu")==null){
+            gong=new Gong(1,"huifutz","huifutzid",name);
+            request.getSession().setAttribute("huifu",gong);
+        }else {
+            gong=(Gong)request.getSession().getAttribute("huifu");
+            gong.setDianji(gong.getDianji()+1);
+        }
+        HuifuTieZiSeriverImpl tieziSeriver=new HuifuTieZiSeriverImpl();
+        List<HufuTieZi> list=tieziSeriver.de(gong);
+        request.getSession().setAttribute("gong",gong);
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("name",list);
+        jsonObject.put("n",new Random().nextInt(1000));
+        PrintWriter printWriter=response.getWriter();
+        printWriter.print(jsonObject);
+        printWriter.flush();
+        printWriter.close();
+    }
+}

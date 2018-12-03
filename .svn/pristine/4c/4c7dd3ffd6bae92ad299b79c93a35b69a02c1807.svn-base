@@ -1,0 +1,78 @@
+package main.hj.luntan.servlet;
+
+import com.alibaba.fastjson.JSONObject;
+
+import main.hj.luntan.entity.Dianzan;
+
+import main.hj.luntan.entity.User;
+import main.hj.luntan.seriver.impl.LoginSeriverImpl;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+
+@WebServlet(name = "Dex3Servlet",urlPatterns = "/k")
+public class Dex3Servlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int code=0;
+        int aa;
+        int ss=0;
+        boolean flaa=false;
+        LoginSeriverImpl loginSeriver=new LoginSeriverImpl();
+        if (request.getSession().getAttribute("shoujihao")==null){
+            code=0;
+            response.setContentType("application/json;charset=utf-8");
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("code",code);
+            PrintWriter out=response.getWriter();
+            out.print(jsonObject);
+            out.flush();
+            out.close();
+        }else {
+            Dianzan dianzan=new Dianzan();
+            code=1;
+            String gg=request.getParameter("id");
+            aa=Integer.parseInt(gg);
+            User user1= (User) request.getSession().getAttribute("shoujihao");
+            int id=user1.getId();
+            dianzan.setBid(aa);
+            dianzan.setYid(id);
+            try {
+               int falg=loginSeriver.list(id,aa);
+                if (falg==0){
+                    loginSeriver.insertt(dianzan);
+                     flaa=true;
+                }else {
+                         loginSeriver.deletee(dianzan);
+                         flaa=false;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                 ss=loginSeriver.list1(aa);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            response.setContentType("application/json;charset=utf-8");
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("code",code);
+            jsonObject.put("flaa",flaa);
+            jsonObject.put("ss",ss);
+            jsonObject.put("aa",aa);
+            PrintWriter out=response.getWriter();
+            out.print(jsonObject);
+            out.flush();
+            out.close();
+        }
+    }
+}

@@ -1,0 +1,30 @@
+package main.hj.luntan.dao.impl;
+
+import main.hj.luntan.common.Connect;
+import main.hj.luntan.dao.TieziDao;
+import main.hj.luntan.entity.Tiezi;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TieziDaoImpl implements TieziDao {
+    Connect connect=new Connect();
+    //根据文本框内容来模糊查询帖子名字；
+    @Override
+    public List<String> chatiezi(Tiezi tiezi) {
+        String sql="SELECT biaoti FROM zhutitz WHERE biaoti LIKE ? LIMIT 5;";
+        String s="%"+tiezi.getBiaoti()+"%";
+        ResultSet resultSet=connect.select(sql,s);
+        List<String> list=new ArrayList<>();
+        try {
+            while (resultSet.next()){
+                list.add(resultSet.getString(1));
+            }
+        }catch (SQLException e){
+
+        }
+        return list;
+    }
+}

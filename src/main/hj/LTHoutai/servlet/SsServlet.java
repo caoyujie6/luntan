@@ -1,0 +1,44 @@
+package main.hj.LTHoutai.servlet;
+
+import com.alibaba.fastjson.JSONObject;
+import main.hj.LTHoutai.entiy.Bankuai;
+import main.hj.LTHoutai.entiy.GlTz;
+import main.hj.LTHoutai.seriver.SeriverImpl.TieZiSeriverImpl;
+import main.hj.luntan.common.Gong;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+import java.util.Random;
+
+@WebServlet(name = "SsServlet",urlPatterns = "/ss")
+public class SsServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name=request.getParameter("name");
+        String bkid=request.getParameter("bkid");
+        String csym=request.getParameter("csym");
+        if (csym==null||csym==""){
+            csym="1";
+        }
+        main.hj.LTHoutai.common.Gong gong=new main.hj.LTHoutai.common.Gong(Integer.parseInt(csym),"zhutitz","bankuanid",bkid,name,"biaoti");
+        request.getSession().setAttribute("jzgd",gong);
+        TieZiSeriverImpl tieZiSeriver=new TieZiSeriverImpl();
+        List<GlTz> list=tieZiSeriver.cha(gong);
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("list",list);
+        jsonObject.put("n",new Random().nextInt(1000));
+        PrintWriter printWriter=response.getWriter();
+        printWriter.print(jsonObject);
+        printWriter.flush();
+        printWriter.close();
+    }
+}

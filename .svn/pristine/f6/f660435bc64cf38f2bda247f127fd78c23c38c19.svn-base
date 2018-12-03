@@ -1,0 +1,230 @@
+package main.hj.luntan.seriver.impl;
+
+
+import main.hj.luntan.dao.impl.LoginImpl;
+import main.hj.luntan.entity.*;
+import main.hj.luntan.seriver.LoginSeriver;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class LoginSeriverImpl implements LoginSeriver {
+    LoginImpl impl = new LoginImpl();
+
+    @Override
+    public List<Login> select() {
+        return null;
+    }
+
+    @Override
+    public int insert(User user) {
+        return impl.update(user);
+    }
+
+    @Override
+    public List<Login> fenye(int start, int showNum) {
+        List list = new ArrayList();
+        try {
+            list = impl.fenye((start - 1) * showNum, showNum);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public int geshu(int num, String falg) {
+        try {
+            int a = impl.getsum(falg);
+            if (a % num == 0) {
+                return a / num;
+            } else {
+                return a / num + 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean denglu(Login login) {
+        try {
+            List<User> list = impl.findAll();
+            for (int i = 0; i < list.size(); i++) {
+                /* Login login1= list.get(i);*/
+                if (list.get(i).getName().equals(login.getName()) && list.get(i).getMima().equals(login.getPassword())) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public List<Login> mohuselect(String falg, int start, int yeshu) {
+        List<Login> list = null;
+        try {
+            list = impl.mohuselect(falg, (start - 1) * yeshu, yeshu);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public boolean delete(Login login) {
+        int a = impl.delete(login);
+        if (a > 0) {
+            return true;
+        }
+        return false;
+    }
+    @Override
+    public boolean xiugai(Login login, String falg) {
+        int a = impl.xiugai(login, falg);
+        if (a > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    //查找帖子内容
+    @Override
+    public List<Tiezi> findAllTZ() {
+        List<Tiezi> tiezis = null;
+        try {
+            tiezis = impl.findAllTZ();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tiezis;
+    }
+
+    //根据id查找帖子内容
+    @Override
+    public Tiezi findByTZid(int id) {
+        Tiezi tiezi = null;
+        try {
+            tiezi = impl.fingByTieziId(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tiezi;
+    }
+     //查找所有板块
+    @Override
+    public List<Bankuai> findAllBK() {
+        List<Bankuai> list = null;
+        try {
+            list = impl.findAllBK();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    //添加帖子
+    @Override
+    public int insert(Tiezi tiezi) {
+        int a = impl.insert(tiezi);
+        return a;
+    }
+
+    @Override
+    public List<User> panduan(User user) {
+        List<User> list = impl.sjcx(user);
+        return list;
+    }
+
+    @Override
+    public int tj(User user) {
+        return impl.sjtj(user);
+    }
+
+    @Override
+    public List<User> findAll() throws SQLException {
+        return impl.findAll();
+    }
+
+    @Override
+    public List<User> cha(User user) throws SQLException {
+       return impl.cha(user);
+    }
+
+
+    //查询回复内容
+    @Override
+    public List<HuiFuLianBiao> huifu(int a) {
+        List<HuiFuLianBiao> list=null;
+        try {
+            list= impl.huifu(a);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    //回复帖子
+    @Override
+    public int huifutiezi(HufuTieZi hufuTieZi) {
+        int a=impl.huifutiezi(hufuTieZi);
+        return a;
+    }
+    //通过name查找回复人id
+    @Override
+    public int selectUser(String name) {
+        int a=0;
+        try {
+            a=impl.selectUser(name);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return a;
+    }
+   //根据板块名字查找版块id
+    @Override
+    public Bankuai selectBK(String name) {
+        try {
+            return impl.selectBk(name);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public int insertt(Dianzan dianzan) {
+        return impl.insertt(dianzan);
+    }
+        //查询点赞表
+    @Override
+    public int list(int yid, int bid) throws SQLException {
+        return impl.list(yid,bid);
+    }
+        //删除点赞表里的字段
+    @Override
+    public int deletee(Dianzan dianzan) {
+        return impl.deletee(dianzan);
+    }
+
+    @Override
+    public int list1(int bid) throws SQLException {
+        return impl.list1(bid);
+    }
+
+    @Override
+    public List<Tiezi> findByUserId(int userId){
+        List<Tiezi> list=impl.findByUserId(userId);
+//        for (int i=0;i<list.size();i++){
+//            System.out.println(list.get(i).getBiaoti());
+//        }
+        return list;
+    }
+
+//    public static void main(String[] args) throws SQLException {
+//        LoginSeriverImpl l =new LoginSeriverImpl();
+//        l.findByUserId(658);
+//    }
+}

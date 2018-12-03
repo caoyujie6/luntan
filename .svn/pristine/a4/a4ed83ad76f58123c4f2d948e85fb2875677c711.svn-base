@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="luntan/jquery-3.3.1.js"></script>
+<body>
+<input type="checkbox" value="1" name="shop">商品一号
+<input type="checkbox" value="2" name="shop">商品二号
+<input type="checkbox" value="3" name="shop">商品三号
+<input type="checkbox" value="4" name="shop">商品四号<br/>
+<input type="button" value="点击" id="buttonClick">
+</body>
+<script>
+    $("#buttonClick").click(function () {
+        var arr=[]
+        $("input[name='shop']:checked").each(function(j) {
+            var that=$(this);
+            arr.push(that.val());
+        })
+        alert("选中商品的数量："+arr.length);
+        alert("选中商品的ID："+arr.toString())
+    })
+</script>
+</html>

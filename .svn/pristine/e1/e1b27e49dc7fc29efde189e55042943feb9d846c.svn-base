@@ -1,0 +1,42 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: 曹宇杰
+  Date: 2018/11/13
+  Time: 10:52
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>练习一</title>
+</head>
+<script src="jquery-3.3.1.js"></script>
+<script type="text/javascript">
+    // function get() {
+    //     var e=document.getElementById("e").value;
+    //     $.get("/aa","name="+e,xx)
+    //     function xx(data) {
+    //         if (data=="true") {
+    //             $("#aaaa").html("已被注册");
+    //         }else {
+    //             $("#aaaa").html("可以使用");
+    //         }
+    //     }
+    // }
+    function get() {
+        var e=document.getElementById("e").value;
+        $.getJSON("/aa","name="+e,xxx)
+        function xxx(data) {
+            var  str=data.na;
+            var obj=eval('('+str+')');
+            $(obj).each(function () {
+                $("#aaaa").append("<tr><td>"+this.shoujihao+"</td><td>"+this.kaishishijian+"</td><td>"+this.yanzhengma +"</td></tr>")
+            })
+        }
+    }
+</script>
+<body>
+<input type="text" id="e"  onblur="get()" value="">
+<table id="aaaa"></table>
+</body>
+</html>

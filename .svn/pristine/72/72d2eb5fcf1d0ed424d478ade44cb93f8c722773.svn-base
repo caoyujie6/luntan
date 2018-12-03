@@ -1,0 +1,46 @@
+package main.hj.luntan.servlet;
+
+import com.alibaba.fastjson.JSONObject;
+import com.mysql.cj.Session;
+import main.hj.luntan.entity.Login;
+import main.hj.luntan.entity.User;
+import main.hj.luntan.seriver.impl.LoginSeriverImpl;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+@WebServlet(name = "Dex2Servlet",urlPatterns = "/denglu")
+public class Dex2Servlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name= request.getParameter("name");
+        String pwd=request.getParameter("password");
+        LoginSeriverImpl loginSeriver=new LoginSeriverImpl();
+        int id=loginSeriver.selectUser(name);
+        User user=new User();
+        user.setId(id);
+        user.setName(name);
+        user.setMima(pwd);
+        String aa=null;
+        try {
+            List<User> list=loginSeriver.cha(user);
+            if (list.size()==0){
+                request.setAttribute("aa","用户名或密码不正确");
+                response.sendRedirect("luntan/index.jsp");
+            }else {
+                request.getSession().setAttribute("shoujihao", user);
+                response.sendRedirect("luntan/articles-list.jsp");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+}

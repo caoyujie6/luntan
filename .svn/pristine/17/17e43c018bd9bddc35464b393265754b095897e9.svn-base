@@ -1,0 +1,46 @@
+package main.hj.luntan.dao;
+import main.hj.luntan.entity.*;
+
+import java.sql.SQLException;
+import java.util.List;
+
+public interface LoginDao {
+    //查询所有
+    List<Login> findAll() throws SQLException;
+    //根据ID查询
+    Login fingById(String id);
+    //根据用户名和密码查询
+    Login fingByNameAddPaeeword();
+    //增、删、改
+    int update(Login login);
+    //分页查询
+    List<Login> fenye(int start, int yeshu) throws SQLException;
+    //得到表的总条数
+    int getsum(String falg) throws SQLException;
+    //模糊查询
+    List<Login> mohuselect(String falg, int start, int yeshu) throws SQLException;
+    //删除
+    int delete(Login login);
+    //修改
+    int xiugai(Login login, String falg);
+    //查询帖子的全部
+    List<Tiezi> findAllTZ() throws SQLException;
+    //根据帖子id查询帖子的内容
+    Tiezi fingByTieziId(int id) throws SQLException;
+    //查询板块的全部内容
+    List<Bankuai> findAllBK() throws SQLException;
+    //连接查询帖子属于哪个板块
+    List<Bankuai> BKname(int id);
+    //把帖子巴加到数据库
+    int insert(Tiezi tiezi);
+    //根据手机号查询是否有此人
+    List<User> sjcx(User user);
+    //添加一个手机号
+    int sjtj(User user);
+    //查询回复帖子
+    List<HuiFuLianBiao> huifu(int a) throws SQLException;
+    //回复帖子
+    int huifutiezi(HufuTieZi hufuTieZi);
+    //查找用户ID
+    int selectUser(String name) throws SQLException;
+}

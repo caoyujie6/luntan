@@ -1,0 +1,40 @@
+package main.hj.luntan.seriver;
+
+
+import main.hj.luntan.entity.*;
+
+import java.util.List;
+
+public interface LoginSeriver {
+    List<Login> select();
+    String insert(Login login);
+    List<Login> fenye(int start, int showNum);
+    int geshu(int num, String falg);
+    //登录
+    boolean denglu(Login login);
+    List<Login> mohuselect(String falg, int start, int yeshu);
+    //通过id 删除
+    boolean delete(Login login);
+    //修改
+    boolean xiugai(Login login, String falg);
+    //查询全部帖子的内容
+    List<Tiezi> findAllTZ();
+    //根据id查找
+    Tiezi findByTZid(int id);
+    //查询板块表的内容
+    List<Bankuai> findAllBK();
+    //发表帖子（添加帖子）
+    int insert(Tiezi tiezi);
+    //根据手机号来查询是否该用户已注册
+    List<User> panduan(User user);
+    //添加一名手机号用户
+    int tj(User user);
+    //查询回复帖子
+    List<HuiFuLianBiao> huifu(int a);
+    //回复帖子
+    int huifutiezi(HufuTieZi hufuTieZi);
+    //通过name查找回复人的id
+    int selectUser(String name);
+    //根据板块名字查找版块id
+    Bankuai selectBK(String name);
+}
